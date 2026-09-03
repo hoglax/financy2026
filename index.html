@@ -6,13 +6,13 @@
   <title>Финансовый_отчет_2026 - Google Таблицы</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Roboto, Arial, sans-serif; font-size: 13px; background: #fff; color: #333; overflow: hidden; height: 100vh; cursor: pointer; }
+    body { font-family: Roboto, Arial, sans-serif; font-size: 13px; background: #fff; color: #333; overflow: hidden; height: 100vh; }
 
-    /* Оверлей-подсказка для клика */
+    /* Экран приглашения (обход блокировки автовоспроизведения) */
     #start-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(255,255,255,0.95);
+      background: rgba(255,255,255,0.98);
       z-index: 10000;
       display: flex;
       flex-direction: column;
@@ -24,16 +24,18 @@
     .start-btn {
       background: #1a73e8;
       color: white;
-      padding: 15px 30px;
-      border-radius: 24px;
+      padding: 16px 32px;
+      border-radius: 28px;
       font-size: 16px;
       font-weight: 500;
       border: none;
       cursor: pointer;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      box-shadow: 0 4px 15px rgba(26,115,232,0.4);
+      transition: all 0.2s;
     }
+    .start-btn:hover { background: #1557b0; transform: scale(1.03); }
 
-    /* Интерфейс таблицы */
+    /* Таблица */
     .header { background: #f9fbfd; border-bottom: 1px solid #e0e0e0; padding: 8px 16px; display: flex; align-items: center; gap: 12px; }
     .logo { width: 30px; height: 30px; background: #1a73e8; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; }
     .toolbar { background: #edf2fa; height: 38px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; padding: 0 16px; gap: 8px; color: #444746; }
@@ -44,7 +46,7 @@
     .header-cell { background: #f8f9fa; color: #707070; font-weight: 500; }
     .selected { outline: 2px solid #1a73e8; background-color: #e8f0fe; z-index: 1; }
 
-    /* Помехи и Неоново-Синий экран */
+    /* Эффект помех */
     #glitch-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
@@ -70,13 +72,12 @@
       background-image: url('https://i.pinimg.com/originals/79/31/fb/7931fb8deebf51b221f8dbe8ff0126c8.jpg');
       background-size: cover;
       background-position: center;
-      background-repeat: no-repeat;
     }
 
     .glitch-text {
-      font-size: 60px;
+      font-size: 50px;
       font-weight: 900;
-      letter-spacing: 5px;
+      letter-spacing: 4px;
       text-transform: uppercase;
       animation: glitch 0.15s infinite;
       text-align: center;
@@ -116,11 +117,14 @@
 </head>
 <body>
 
+  <!-- Оверлей активации -->
   <div id="start-overlay">
-    <div style="font-size: 24px; color: #202124; font-family: Roboto, sans-serif;">Финансовый_отчет_2026.xlsx</div>
+    <div style="font-size: 22px; color: #202124; font-weight: 500;">Финансовый_отчет_2026.xlsx</div>
+    <div style="font-size: 14px; color: #5f6368;">Документ подготовлен к просмотру</div>
     <button class="start-btn" id="start-btn">Открыть документ</button>
   </div>
 
+  <!-- Таблица Google Sheets -->
   <div class="header">
     <div class="logo">田</div>
     <div style="font-size: 18px; color: #202124;">Отчет_3_сентября</div>
@@ -129,6 +133,7 @@
   <div class="formula-bar"><span style="font-weight:bold; font-style:italic; color:#1a73e8;">fx</span><input type="text" class="cell-input" value="Я календарь переверну..."></div>
   <div class="grid-container" id="grid"></div>
 
+  <!-- Экран помех -->
   <div id="glitch-overlay">
     <div class="noise-bg"></div>
     <div class="shufutinsky-photo"></div>
@@ -161,28 +166,71 @@
       }
     }
 
-    // === ВОТ ЭТУ СТРОКУ НУЖНО ЗАМЕНИТЬ ===
-    const base64Audio = "data:audio/mp3;base64,СТРОКА_BASE64_ИЗ_КОНВЕРТЕРА";
-    // ===================================
+    // Синтезатор встроенного звука (Web Audio API)
+    function playShufutinskyMelody() {
+      const AudioContext = window.AudioContext || window.webkitAudioContext;
+      const ctx = new AudioContext();
 
-    // Логика запуска
+      // Ноты для фрагмента "Я календарь переверну - и снова 3 сентября"
+      const notes = [
+        { freq: 220.00, duration: 0.35 }, // Я (A3)
+        { freq: 246.94, duration: 0.35 }, // ка- (B3)
+        { freq: 261.63, duration: 0.35 }, // лен- (C4)
+        { freq: 293.66, duration: 0.35 }, // дарь (D4)
+        { freq: 329.63, duration: 0.50 }, // пе- (E4)
+        { freq: 293.66, duration: 0.35 }, // ре- (D4)
+        { freq: 261.63, duration: 0.70 }, // верну (C4)
+        
+        { freq: 261.63, duration: 0.35 }, // и (C4)
+        { freq: 293.66, duration: 0.35 }, // сно- (D4)
+        { freq: 329.63, duration: 0.70 }, // ва (E4)
+        
+        { freq: 349.23, duration: 0.40 }, // тре- (F4)
+        { freq: 329.63, duration: 0.40 }, // тьё (E4)
+        { freq: 293.66, duration: 0.80 }, // сен- (D4)
+        { freq: 261.63, duration: 1.20 }  // тября (C4)
+      ];
+
+      let time = ctx.currentTime + 0.1;
+
+      notes.forEach(note => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        osc.type = 'sawtooth'; // Ретро-звучание синтезатора
+        osc.frequency.setValueAtTime(note.freq, time);
+
+        // Плавная огибающая громкости
+        gain.gain.setValueAtTime(0.15, time);
+        gain.gain.exponentialRampToValueAtTime(0.001, time + note.duration - 0.05);
+
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        osc.start(time);
+        osc.stop(time + note.duration);
+
+        time += note.duration;
+      });
+    }
+
+    // Запуск по клику
     const startBtn = document.getElementById('start-btn');
-    const audio = new Audio(base64Audio); // Создаем аудио из встроенной строки
-
     startBtn.addEventListener('click', () => {
       document.getElementById('start-overlay').style.display = 'none';
       
-      // Мгновенный запуск звука
-      audio.play().catch(err => alert("Ошибка встроенного звука. Убедитесь, что Base64 строка верна."));
+      // Воспроизведение синтезированной мелодии
+      playShufutinskyMelody();
 
-      // Через 3 секунды включаем помехи и фото
+      // Через 2.5 секунды появление неонового эффекта и фото
       setTimeout(() => {
         document.getElementById('glitch-overlay').style.display = 'flex';
-      }, 3000);
+      }, 2500);
     });
   </script>
 </body>
 </html>
+
 
 
 
