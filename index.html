@@ -6,29 +6,34 @@
   <title>Финансовый_отчет_2026 - Google Таблицы</title>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: Roboto, Arial, sans-serif; font-size: 13px; background: #fff; color: #333; overflow: hidden; height: 100vh; }
+    body { font-family: Roboto, Arial, sans-serif; font-size: 13px; background: #fff; color: #333; overflow: hidden; height: 100vh; cursor: pointer; }
 
-    /* Оверлей для первички клика (чтобы браузер разрешил звук) */
+    /* Оверлей-подсказка для клика */
     #start-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
-      background: rgba(0,0,0,0.05);
-      z-index: 8888;
+      background: rgba(255,255,255,0.9);
+      z-index: 10000;
       display: flex;
+      flex-direction: column;
       justify-content: center;
-      align-items: flex-end;
-      padding-bottom: 20px;
-      cursor: pointer;
+      align-items: center;
+      gap: 20px;
     }
 
-    .start-hint {
+    .start-btn {
       background: #1a73e8;
       color: white;
-      padding: 10px 20px;
-      border-radius: 20px;
-      font-size: 14px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      padding: 15px 30px;
+      border-radius: 24px;
+      font-size: 16px;
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      transition: background 0.2s;
     }
+    .start-btn:hover { background: #1557b0; }
 
     /* Интерфейс таблицы */
     .header { background: #f9fbfd; border-bottom: 1px solid #e0e0e0; padding: 8px 16px; display: flex; align-items: center; gap: 12px; }
@@ -117,12 +122,11 @@
 </head>
 <body>
 
-  <!-- Подсказка для активации звука -->
   <div id="start-overlay">
-    <div class="start-hint">Нажмите в любом месте экрана для просмотра документа</div>
+    <div class="doc-title" style="font-size: 24px; color: #202124;">Финансовый_отчет_2026.xlsx</div>
+    <button class="start-btn" id="start-btn">Открыть документ</button>
   </div>
 
-  <!-- Google Sheet UI -->
   <div class="header">
     <div class="logo">田</div>
     <div class="title-area">
@@ -136,18 +140,16 @@
   <div class="formula-bar"><span class="fx">fx</span><input type="text" class="cell-input" value="Я календарь переверну..."></div>
   <div class="grid-container" id="grid"></div>
 
-  <!-- Экран помех -->
   <div id="glitch-overlay">
     <div class="noise-bg"></div>
     <div class="shufutinsky-photo"></div>
     <div class="glitch-text">3 СЕНТЯБРЯ</div>
   </div>
 
-  <!-- Аудио подтягивается из локального файла song.mp3 -->
   <audio id="shufutinsky-audio" src="song.mp3" preload="auto"></audio>
 
   <script>
-    // Отрисовка ячеек
+    // Отрисовка таблицы
     const grid = document.getElementById('grid');
     const cols = ['', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
     cols.forEach(c => {
@@ -172,22 +174,25 @@
       }
     }
 
-    // Запуск анимации и звука после клика по экрану
-    let started = false;
-    document.addEventListener('click', () => {
-      if (started) return;
-      started = true;
+    // Логика запуска
+    const startBtn = document.getElementById('start-btn');
+    const audio = document.getElementById('shufutinsky-audio');
 
-      // Скрываем подсказку клика
+    // Клик по кнопке "Открыть документ"
+    startBtn.addEventListener('click', (e) => {
+      e.stopPropagation(); // Чтобы клик не ушел на body
       document.getElementById('start-overlay').style.display = 'none';
+      
+      // СРАЗУ включаем музыку (это разрешено браузером)
+      audio.play().catch(err => alert("Ошибка воспроизведения. Проверьте файл song.mp3 в репозитории."));
 
-      // Через 3 секунды включаем эффект и аудио
+      // Через 3 секунды показываем помехи и фото
       setTimeout(() => {
         document.getElementById('glitch-overlay').style.display = 'flex';
-        const audio = document.getElementById('shufutinsky-audio');
-        audio.play().catch(e => console.log("Ошибка аудио:", e));
       }, 3000);
     });
   </script>
 </body>
 </html>
+
+
