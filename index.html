@@ -8,7 +8,7 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { font-family: Roboto, Arial, sans-serif; font-size: 13px; background: #fff; color: #333; overflow: hidden; height: 100vh; position: relative; }
 
-    /* Прозрачный оверлей для первого клика (разрешает звук) */
+    /* Прозрачный оверлей для первого клика (разрешает звук браузером) */
     #click-activator {
       position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(255,255,255,0.01); /* Почти невидимый */
@@ -17,25 +17,19 @@
 
     /* СТАНДАРТНЫЙ ИНТЕРФЕЙС GOOGLE ТАБЛИЦ (Зеленый) */
     .header { background: #f9fbfd; border-bottom: 1px solid #e0e0e0; padding: 8px 16px; display: flex; align-items: center; gap: 12px; }
-    
-    /* Зеленый логотип Таблиц */
     .logo { width: 30px; height: 30px; background: #0f9d58; border-radius: 4px; display: flex; align-items: center; justify-content: center; color: white; font-weight: bold; font-size: 16px;}
-    
     .title-area { display: flex; flex-direction: column; }
     .doc-title { font-size: 18px; font-weight: normal; color: #202124; }
     .menu-bar { display: flex; gap: 12px; font-size: 12px; color: #5f6368; margin-top: 4px; }
-    
     .toolbar { background: #edf2fa; height: 38px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; padding: 0 16px; gap: 8px; color: #444746; }
     .formula-bar { height: 28px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; padding: 0 8px; gap: 8px; background: #fff; color: #707070; }
-    .fx { font-weight: bold; font-style: italic; color: #0f9d58; } /* Зеленый акцент */
+    .fx { font-weight: bold; font-style: italic; color: #0f9d58; }
     .cell-input { border: none; outline: none; width: 100%; font-size: 13px; }
 
     /* Таблица */
     .grid-container { display: grid; grid-template-columns: 40px repeat(10, 100px); overflow: auto; height: calc(100vh - 105px); background: #f8f9fa; }
     .cell { border-right: 1px solid #e0e0e0; border-bottom: 1px solid #e0e0e0; height: 25px; display: flex; align-items: center; justify-content: center; background: #fff; }
     .header-cell { background: #f8f9fa; color: #707070; font-weight: 500; }
-    
-    /* Зеленое стандартное выделение ячейки */
     .selected { outline: 2px solid #0f9d58; background-color: #e6f4ea; z-index: 1; }
 
     /* ЭФФЕКТ ГЛИТЧА И ПОМЕХ */
@@ -61,6 +55,7 @@
       box-shadow: 0 0 20px #00ff66;
       animation: glitch-img 0.2s infinite;
       border: 2px solid #00ff66;
+      /* Ссылка на фото пока внешняя, Pinterest обычно работает */
       background-image: url('https://i.pinimg.com/originals/79/31/fb/7931fb8deebf51b221f8dbe8ff0126c8.jpg');
       background-size: cover;
       background-position: center;
@@ -131,7 +126,7 @@
     <div class="glitch-text">3 СЕНТЯБРЯ</div>
   </div>
 
-  <audio id="shufutinsky-audio" src="https://moria.101.ru/v1_1/mp3/46/stream_200021.mp3" preload="auto"></audio>
+  <audio id="shufutinsky-audio" src="song.mp3" preload="auto"></audio>
 
   <script>
     // Отрисовка таблицы
@@ -155,10 +150,13 @@
     
     // Клик пользователя в любом месте таблицы
     activator.addEventListener('click', () => {
-      // Браузер разрешает звук после клика
-      audio.play().catch(e => console.log("Ошибка аудио:", e));
+      // Браузер разрешает звук ТОЛЬКО после клика
+      audio.play().catch(e => {
+          alert("Ошибка: Браузер заблокировал звук или файл song.mp3 не найден в репозитории.");
+          console.log(e);
+      });
       
-      // Скрываем активатор
+      // Скрываем активатор, чтобы можно было взаимодействовать с таблицей
       activator.style.display = 'none';
 
       // ЧЕРЕЗ 3 СЕКУНДЫ запускаем помехи
@@ -169,12 +167,3 @@
   </script>
 </body>
 </html>
-
-
-
-
-
-
-
-
-
