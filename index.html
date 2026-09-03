@@ -46,7 +46,7 @@
 
     /* Фото Шуфутинского с эффектом глитча */
     .shufutinsky-img {
-      max-width: 280px;
+      max-width: 300px; /* Увеличил размер фото */
       height: auto;
       border-radius: 12px;
       box-shadow: 0 0 20px #4cc9f0, 0 0 40px #0077b6;
@@ -97,7 +97,6 @@
 </head>
 <body>
 
-  <!-- Google Sheet UI -->
   <div class="header">
     <div class="logo">田</div>
     <div class="title-area">
@@ -119,15 +118,12 @@
 
   <div class="grid-container" id="grid"></div>
 
-  <!-- Экран помех -->
   <div id="glitch-overlay">
     <div class="noise-bg"></div>
-    <!-- Фото Шуфутинского -->
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Mikhail_Shufutinsky_2011.jpg/800px-Mikhail_Shufutinsky_2011.jpg" alt="Михаил Шуфутинский" class="shufutinsky-img">
+    <img src="http://i.pinimg.com/originals/79/31/fb/7931fb8deebf51b221f8dbe8ff0126c8.jpg" alt="Михаил Шуфутинский" class="shufutinsky-img">
     <div class="glitch-text">3 СЕНТЯБРЯ</div>
   </div>
 
-  <!-- Аудио файл -->
   <audio id="shufutinsky-audio" src="https://moria.101.ru/v1_1/mp3/46/stream_200021.mp3" preload="auto"></audio>
 
   <script>
@@ -171,5 +167,3 @@
   </script>
 </body>
 </html>
-
-
